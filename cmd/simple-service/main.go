@@ -10,17 +10,21 @@ import (
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
-	io.WriteString(w, "This is my website!\n")
+	io.WriteString(w, "Hello !")
 }
-func getHello(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("got /hello request\n")
-	io.WriteString(w, "Hello, HTTP!\n")
+func getOS(w http.ResponseWriter, r *http.Request) {
+	info, err := GetOSInfo()
+	if err != nil {
+		io.WriteString(w, "Error")
+	}
+	fmt.Printf("got /os request\n")
+	io.WriteString(w, info.Name)
 }
 
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", getRoot)
-	mux.HandleFunc("/hello", getHello)
+	mux.HandleFunc("/os", getOS)
 
 	err := http.ListenAndServe(":3333", mux)
 
