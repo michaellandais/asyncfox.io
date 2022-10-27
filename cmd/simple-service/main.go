@@ -34,7 +34,7 @@ func main() {
 	mux.HandleFunc("/", getRoot)
 	mux.HandleFunc("/os", getOS)
 
-	err := http.ListenAndServe(":3333", mux)
+	err := http.ListenAndServe(":3000", mux)
 
 	if errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("server closed\n")
