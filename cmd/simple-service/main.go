@@ -10,7 +10,7 @@ import (
 )
 
 type Page struct {
-	name string
+	Name string
 }
 
 var templates = template.Must(template.ParseFiles("index.html"))
@@ -22,7 +22,7 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 
 func getOS(w http.ResponseWriter, r *http.Request) {
 	info, _ := GetOSInfo()
-	p := Page{name: info.Name}
+	p := Page{Name: info.Name}
 	err := templates.ExecuteTemplate(w, "index.html", p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
