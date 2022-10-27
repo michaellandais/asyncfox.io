@@ -3,22 +3,30 @@ package main
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 	"os"
 )
 
+type Page struct {
+	name string
+}
+
+var templates = template.Must(template.ParseFiles("index.html"))
+
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
 	io.WriteString(w, "Hello !")
 }
+
 func getOS(w http.ResponseWriter, r *http.Request) {
-	info, err := GetOSInfo()
+	info, _ := GetOSInfo()
+	p := Page{name: info.Name}
+	err := templates.ExecuteTemplate(w, "index.html", p)
 	if err != nil {
-		io.WriteString(w, "Error")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Printf("got /os request\n")
-	io.WriteString(w, info.Name)
 }
 
 func main() {
